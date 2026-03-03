@@ -12,6 +12,8 @@ public:
     Entity() = default;
     Entity(uint32_t id, Registry* registry): m_id(id), m_registry(registry) {}
 
+    void destroy();
+
     bool isValid() const;
 
     operator bool() const { return isValid(); }
@@ -24,7 +26,7 @@ public:
     
 private:
     uint32_t m_id = 0;
-    uint32_t m_version;
+    uint32_t m_version = 0; // Version at time of creation
     Registry* m_registry = nullptr; 
 
 };
