@@ -10,6 +10,9 @@ class Entity; // Forward Declare
 class Registry
 {
 public:
+    Entity createEntity();
+    void destroyEntity(uint32_t id);
+
     bool isValid(uint32_t id, uint32_t version) const;
 
 private:
