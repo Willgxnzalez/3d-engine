@@ -10,8 +10,9 @@ class Entity
 {
 public:
     Entity() = default;
-    Entity(uint32_t id, Registry* registry): m_id(id), m_registry(registry) {}
-
+    Entity(uint32_t id, uint32_t version, Registry* registry)
+        : m_id(id), m_version(version), m_registry(registry) {}
+        
     void destroy();
 
     bool isValid() const;

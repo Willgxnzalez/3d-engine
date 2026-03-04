@@ -1,10 +1,10 @@
-#include "ECS/Entity.h"
-#include "ECS/Registry.h"
+#include "ecs/Entity.h"
+#include "ecs/Registry.h"
 
 namespace engine {
 
 void Entity::destroy() {
-
+    if (m_registry) m_registry->destroyEntity(m_id);
 }
 
 bool Entity::isValid() const {
