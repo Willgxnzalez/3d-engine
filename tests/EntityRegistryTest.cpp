@@ -69,3 +69,78 @@ TEST(EntityTest, EqualityOperator)
     Entity e3 = registry.createEntity();
     EXPECT_NE(e1, e3);
 }
+
+// ─── Component Tests ───────────────────────────────────────────────
+
+struct Transform {
+    float x, y, z;
+};
+
+struct Health {
+    int current;
+    int max;
+};
+
+TEST(EntityRegistryTest, AddAndGetComponent)
+{
+    Registry reg;
+    Entity e = reg.createEntity();
+    e.addComponent<Transform>(1.0f, 2.0f, 3.0f);
+
+    EXPECT_TRUE(e.hasComponent<Transform>());
+    EXPECT_EQ(e.getComponent<Transform>().x, 1.0f);
+    EXPECT_EQ(e.getComponent<Transform>().y, 2.0f);
+    EXPECT_EQ(e.getComponent<Transform>().z, 3.0f);
+}
+
+TEST(EntityRegistryTest, HasComponentReturnsFalseWhenMissing)
+{
+    Registry reg;
+    Entity e = reg.createEntity();
+    EXPECT_FALSE(e.hasComponent<Transform>());
+}
+
+TEST(EntityRegistryTest, RemoveComponent)
+{
+    Registry reg;
+    Entity e = reg.createEntity();
+    e.addComponent<Transform>(1.0f, 2.0f, 3.0f);
+    e.removeComponent<Transform>();
+    EXPECT_FALSE(e.hasComponent<Transform>());
+}
+
+TEST(EntityRegistryTest, MultipleComponentTypes)
+{
+    Registry reg;
+    Entity e = reg.createEntity();
+    e.addComponent<Transform>(1.0f, 2.0f, 3.0f);
+    e.addComponent<Health>(50, 100);
+
+    EXPECT_TRUE(e.hasComponent<Transform>());
+    EXPECT_TRUE(e.hasComponent<Health>());
+    EXPECT_EQ(e.getComponent<Health>().current, 50);
+}
+
+TEST(EntityRegistryTest, DestroyRemovesAllComponents)
+{
+    Registry reg;
+    Entity e = reg.createEntity();
+    e.addComponent<Transform>(1.0f, 2.0f, 3.0f);
+    e.addComponent<Health>(100, 100);
+    e.destroy();
+
+    EXPECT_FALSE(e.isValid());
+}
+
+TEST(EntityRegistryTest, ComponentsIndependentBetweenEntities)
+{
+    Registry reg;
+    Entity e1 = reg.createEntity();
+    Entity e2 = reg.createEntity();
+
+    e1.addComponent<Transform>(1.0f, 0.0f, 0.0f);
+    e2.addComponent<Transform>(9.0f, 0.0f, 0.0f);
+
+    EXPECT_EQ(e1.getComponent<Transform>().x, 1.0f);
+    EXPECT_EQ(e2.getComponent<Transform>().x, 9.0f);
+}

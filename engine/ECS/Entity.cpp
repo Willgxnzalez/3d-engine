@@ -1,5 +1,4 @@
 #include "ecs/Entity.h"
-#include "ecs/Registry.h"
 
 namespace engine {
 
