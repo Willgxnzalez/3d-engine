@@ -39,7 +39,7 @@ public:
         m_denseData.pop_back();
     }
 
-    bool contains(uint32_t entityIndex) {
+    bool contains(uint32_t entityIndex) const {
         return entityIndex < m_sparse.size() && m_sparse[entityIndex] != INVALID_INDEX; 
     }
 
